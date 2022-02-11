@@ -1,0 +1,86 @@
+{
+  "dataset": {
+    "dataset": "ActivityNet",
+    "feature_path": "data/activity-c3d",
+    "word_dim": 300,
+    "frame_dim": 500,
+    "max_num_words": 20,
+    "max_num_frames": 256,
+    "target_stride": 4,
+    "train_data": "data/activitynet/train_data.json",
+    "test_data": "data/activitynet/test_data.json",
+    "val_data": "data/activitynet/val_data.json",
+    "vocab_path": "data/activitynet/glove_model.bin"
+  },
+  "train": {
+    "lr": 8e-4,
+    "weight_decay": 1e-7,
+    "warmup_updates": 200,
+    "warmup_init_lr": 1e-7,
+    "batch_size": 64,
+    "max_num_epochs": 20,
+    "model_saved_path": "checkpoints/activitynet/weak",
+    "topK": 32,
+    "norm1": 1e-1,
+    "intra": 1e-1,
+    "norm2": 1e-2
+  },
+  "model": {
+    "name": "WeaklyModel",
+    "filter_branch": true,
+    "VideoEncoder": {
+      "name": "FrameAvgPool",
+      "input_size": 500,
+      "hidden_size": 512,
+      "kernel_size": 4,
+      "stride": 4
+    },
+    "QueryEncoder": {
+      "name": "QueryEncoder",
+      "input_size": 300,
+      "hidden_size": 512,
+      "gru": {
+        "num_layers": 1,
+        "bidirectional": true
+      }
+    },
+    "Fusion": {
+      "name": "BetterFusion",
+      "hidden_size": 512,
+      "gru": {
+        "num_layers": 1,
+        "bidirectional": true
+      },
+      "SparsePropMaxPool": {
+        "num_scale_layers": [
+          16,
+          8,
+          8
+        ],
+        "num_layers": 64
+      }
+    },
+    "Scorer": {
+      "name": "MapConv",
+      "input_size": 512,
+      "hidden_sizes": [
+        512
+      ],
+      "kernel_sizes": [
+        5
+      ],
+      "strides": [
+        1
+      ],
+      "paddings": [
+        2
+      ],
+      "dilations": [
+        1
+      ]
+    },
+    "Filter": {
+
+    }
+  }
+}
