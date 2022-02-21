@@ -1,4 +1,4 @@
-# A Pytorch Implementation of MM 2020 "Regularized Two-Branch Proposal Networks for Weakly-Supervised Moment Retrieval in Videos"
+## A Pytorch Implementation of MM 2020 "Regularized Two-Branch Proposal Networks for Weakly-Supervised Moment Retrieval in Videos"
 
 ## Training 
 ```
